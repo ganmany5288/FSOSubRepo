@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-// import './App.css'
-
 
 const MostVotes = (props) =>{
-  // console.log(props.t1)
-  // console.log(props.t2)
-  if (props.check == false){
+  if (props.check === false){
     return (
       <div>
         <h1>Anecdote with most votes</h1>
@@ -43,7 +38,7 @@ const App = () => {
   const n = anecdotes.length
   // points = Array(n).fill(0)
   // console.log(points)
-  const index = Math.round((Math.random()*anecdotes.length-1)+0)
+  // const index = Math.floor((Math.random()*anecdotes.length))
   const [points, setPoints] = useState(Array(n).fill(0))
   const [selected, setSelected] = useState(0)
   const [voteCheck, setVoteCheck] = useState(false)
@@ -53,7 +48,8 @@ const App = () => {
 
   const handleSelect = (props) => {
     // Setting selected variable to be the value returned by the randomized index (concrete value, not random)
-    console.log("I am here")
+    const index = Math.floor((Math.random()*anecdotes.length))
+    console.log(index)
     setSelected(index)
   }
 
@@ -80,7 +76,7 @@ const App = () => {
           <button onClick={handleSelect}>next anecdote</button>
           <button onClick={handleVote}>vote</button>
 
-          <MostVotes vote={popular} check = {voteCheck} quote={anecdotes[points.indexOf(popular)]} points={popular} t1={points} t2={popular}/>
+          <MostVotes vote={popular} check = {voteCheck} quote={anecdotes[points.indexOf(popular)]} points={popular} />
       </div>
   )
 }
