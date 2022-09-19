@@ -72,7 +72,6 @@ const App = () => {
           <h1>Anecdote of the day</h1>
           <p>{anecdotes[selected]}</p>
           <p>has {points[selected]} votes</p>
-          {/* Why does the buttons below not go ontop of each other instead it goes side by side */}
           <button onClick={handleSelect}>next anecdote</button>
           <button onClick={handleVote}>vote</button>
 
