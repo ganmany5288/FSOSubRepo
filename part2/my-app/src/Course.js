@@ -7,14 +7,13 @@ const Course = (props) => {
     // console.log(parts[1])
     return(
         <div>
-            <h1>{course.name}</h1>   
-            <ul>
-                {course.parts.map((part) => 
-                    <li key={part.id}>
+            <h1>{course.name}</h1>
+            {course.parts.map((part) => 
+                    <p key={part.id}>
                         {part.name} {part.exercises}
-                    </li>
-                )}
-            </ul>
+                    </p>
+            )}
+            <p>total of exercises</p>
         </div>
     )
 
