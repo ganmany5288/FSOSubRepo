@@ -9,6 +9,7 @@ const App = (props) => {
         'a new note...'
     )
 
+    const [showAll, setShowAll] = useState(true)
 
     const addNote = (event) =>{
         event.preventDefault()
@@ -20,6 +21,8 @@ const App = (props) => {
         }
 
         setNotes(notes.concat(noteObject))
+
+        // Reset notes or else it will stay as whatever was initially typed in.
         setNewNote('')
 
 
@@ -31,12 +34,24 @@ const App = (props) => {
         setNewNote(event.target.value)
     }
 
+    // Uses conditional operator (const result = condition ? val1 : val2)
+    // If condition is TRUE then result = val1
+    // If condition is FALSE then result = val2
+    // New notes mapping to a list, divides current notes to important and non-important notes
+    const notesToShow = showAll
+        ? notes
+        : notes.filter(note => note.important)
 
     return(
         <div>
             <h1>Notes</h1>
+            <div>
+                <button onClick={() => setShowAll(!showAll)}>
+                    show {showAll ? 'important' : 'all' }
+                </button>
+            </div>
             <ul>
-                {notes.map(note =>
+                {notesToShow.map(note =>
                     <Note key={note.id} note={note} />    
                 )}
             </ul>
