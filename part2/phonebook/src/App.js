@@ -2,9 +2,21 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    {name: 'Arto Hellas' }
+    {name: 'Arto Hellas'}
   ]) 
   const [newName, setNewName] = useState('')
+
+  function areThesePeopleEqual(first, second){
+    console.log("Hello World")
+    const al = Object.getOwnPropertyNames(first)
+    const bl = Object.getOwnPropertyNames(second)
+
+    // if (al.length != bl.length) return false
+
+    for (const key of al) if (first[key] !== second[key]) return false;
+
+    return true;
+  }
 
 
   const addPerson = (event) => {
@@ -13,9 +25,28 @@ const App = () => {
       name: newName
     }
 
-    setPersons(persons.concat(personObject))
+    // console.log(personObject.name)
+    // console.log(personObject)
 
-    setNewName('')
+    // console.log(personObject.name)
+
+    for (let i = 0; i < persons.length; i++){
+      if (persons[i].name !== personObject.name){
+        console.log("This is a new person")
+        setPersons(persons.concat(personObject))
+        setNewName('')
+        return true
+      }else{
+        alert("This name has been used! Please try again or use a nickname.")
+        setNewName('')
+        return false
+      }
+    }
+
+
+    // console.log(Object.getOwnPropertyNames(personObject))
+    // console.log(Object.getOwnPropertyNames(personObject.name))
+
   }
 
   const handlePersonChange = (event) => {
