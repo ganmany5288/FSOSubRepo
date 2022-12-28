@@ -30,22 +30,26 @@ const App = () => {
 
     // console.log(personObject.name)
 
+    // Exercise 2.7 START
+    // Point of exercise is to update this code to prevent users from adding users that already exists in the phonebook and alert the user if such action is taken...
+
+    var shouldUpdate = true
+
     for (let i = 0; i < persons.length; i++){
-      if (persons[i].name !== personObject.name){
-        console.log("This is a new person")
-        setPersons(persons.concat(personObject))
+      if (persons[i].name === personObject.name){
+        alert(`${personObject.name} has already beed added to the phonebook`)
         setNewName('')
-        return true
-      }else{
-        alert("This name has been used! Please try again or use a nickname.")
-        setNewName('')
-        return false
+        shouldUpdate = false
       }
     }
 
+    if (shouldUpdate === true){
+      console.log("This is a new person")
+      setPersons(persons.concat(personObject))
+      setNewName('')
+    }
 
-    // console.log(Object.getOwnPropertyNames(personObject))
-    // console.log(Object.getOwnPropertyNames(personObject.name))
+    // Exercise 2.7 END
 
   }
 
