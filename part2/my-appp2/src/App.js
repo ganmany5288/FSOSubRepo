@@ -2,15 +2,19 @@ import { useState } from "react";
 import Note from './components/Note'
 
 const App = (props) => {
+
+    // This is a really fancy way of stating a global variable (notes) and have a function to change that variable (setNotes)
     const[notes, setNotes] = useState(props.notes)
     
-    // Represents the current value of the return input method changed through handleNoteChange
+    // The useState(<Insert Stuff Here>). <Insert Stuff Here> is just a parameter for the useState hook, kinda like setting an init value for the state
     const [newNote, setNewNote] = useState(
-        'a new note...'
+        ''
     )
 
     const [showAll, setShowAll] = useState(true)
 
+
+    // addNote function
     const addNote = (event) =>{
         event.preventDefault()
         const noteObject ={
@@ -24,9 +28,6 @@ const App = (props) => {
 
         // Reset notes or else it will stay as whatever was initially typed in.
         setNewNote('')
-
-
-        console.log('New Note created', event.target)
     }
 
     const handleNoteChange = (event) =>{
