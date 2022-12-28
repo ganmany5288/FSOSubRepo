@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    {name: 'Arto Hellas'}
+    {name: 'Arto Hellas', phoneNumber: '123-4567-890', id: 1}
   ]) 
   const [newName, setNewName] = useState('')
 
