@@ -52,7 +52,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        Filter: <input />
+        <button type='submit'>Search</button>
+      </div>
       <form onSubmit={addPerson}>
+        <h2>Add a Number</h2>
         <div>
           Name: <input value={newName} onChange={handlePersonChange} />
         </div>
