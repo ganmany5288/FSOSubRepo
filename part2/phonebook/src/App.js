@@ -37,6 +37,7 @@ const App = () => {
     if (shouldUpdate === true){
       console.log("This is a new person")
       setPersons(persons.concat(personObject))
+      setFilterPersons(persons)
       setNewName('')
       setNewPhoneNumber('')
     }
