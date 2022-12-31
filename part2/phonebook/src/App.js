@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Filter from './components/Filter'
+import Phonebook from './components/Phonebook'
+import Humans from './components/Humans'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -10,7 +13,6 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhoneNumber, setNewPhoneNumber] = useState('')
   const [filterAll, setFilterAll] = useState('')
-
   const [filterPersons, setFilterPersons] = useState(persons)
 
 
@@ -44,9 +46,6 @@ const App = () => {
         setNewName('')
         setNewPhoneNumber('')
   
-        console.log(persons)
-        console.log(filterPersons)
-  
       }
     }
 
@@ -70,46 +69,22 @@ const App = () => {
   const handleFilterSearch = (event) => {
     event.preventDefault()
     setFilterPersons(filterAll === "" ? persons : persons.filter(person => person.name.includes(filterAll)))
-    console.log(persons)
-    console.log(filterAll)
-    console.log("This is filtedPersons: ", filterPersons)
-
-    // Not sure what I did here but it looks like it works...
-    // I basically used the setPersons state to setPersons based on filterAll using the conditional operator
-    // So even during initial setup, filterPersons have to contain a copy of persons (can't think of another way...)
-    // I'm not certain if I set the initial state of a something to an object is that its own individual object or just a reference to the same point of memory to the set object...
-    // Question answered: YES
-
-
-
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter by: <input value={filterAll} onChange={handleFilterChange} />
-        <button type='submit' onClick={handleFilterSearch}>Search</button>
-      </div>
-      <form onSubmit={addPerson}>
-        <h2>Add a Number</h2>
-        <div>
-          Name: <input value={newName} onChange={handlePersonChange} />
-        </div>
-        <div>
-          Phone Number: <input value={newPhoneNumber} onChange={handlePhoneChange} />
-        </div>
-        <div>
-          <button type='submit'>Add</button>
-        </div>
-      </form>
+
+      <Filter filterAll={filterAll}  handleFilterChange={handleFilterChange} handleFilterSearch={handleFilterSearch}/>
+
+      <h2>Add a Number</h2>
+
+      <Phonebook persons={persons} addPerson={addPerson} newName={newName} newPhoneNumber={newPhoneNumber} handlePersonChange={handlePersonChange} handlePhoneChange={handlePhoneChange} />
+
       <h2>Numbers</h2>
       {/* Mapping persons list to a new array of list that show each individual person*/}
-      <ul>
-        {filterPersons.map(person =>
-          <li key={person.id}>{person.name} {person.phoneNumber}</li>
-        )}
-      </ul>
+
+      <Humans filterPersons={filterPersons}/>
     </div>
   )
 }
