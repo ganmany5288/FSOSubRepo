@@ -22,26 +22,33 @@ const App = () => {
       id: persons.length + 1
     }
 
+    if (newName === "" || newPhoneNumber === ""){
+      alert("A field is left empty! Please fill it out!")
+    }else{
+      var shouldUpdate = true
 
-    var shouldUpdate = true
-
-    for (let i = 0; i < persons.length; i++){
-      if (persons[i].name === personObject.name && persons[i].phoneNumber === personObject.phoneNumber){
-        alert(`${personObject.name} has already beed added to the phonebook`)
+      for (let i = 0; i < persons.length; i++){
+        if (persons[i].name === personObject.name && persons[i].phoneNumber === personObject.phoneNumber){
+          alert(`${personObject.name} has already beed added to the phonebook`)
+          setNewName('')
+          setNewPhoneNumber('')
+          shouldUpdate = false
+        }
+      }
+  
+      if (shouldUpdate === true){
+        console.log("This is a new person")
+        setPersons(persons.concat(personObject))
+        // No idea why the below has to be to make the thing show instead of just setFilterPersons(persons) which basically worked before
+        setFilterPersons(persons.concat(personObject))
         setNewName('')
         setNewPhoneNumber('')
-        shouldUpdate = false
+  
+        console.log(persons)
+        console.log(filterPersons)
+  
       }
     }
-
-    if (shouldUpdate === true){
-      console.log("This is a new person")
-      setPersons(persons.concat(personObject))
-      setFilterPersons(persons)
-      setNewName('')
-      setNewPhoneNumber('')
-    }
-
 
   }
 
@@ -82,6 +89,10 @@ const App = () => {
     // So even during initial setup, filterPersons have to contain a copy of persons (can't think of another way...)
     // But how do I do that initially is the question
     // I'm not certain if I set the initial state of a something to an object is that its own individual object or just a reference to the same point of memory to the set object...
+    // Question answered: YES
+
+
+
   }
 
   // const peopleToShow = filterAll === ""
