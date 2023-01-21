@@ -18,11 +18,9 @@ const App = () => {
     .then(response =>{
         console.log('promise fulfilled!')
         setPersons(response.data)
-    })
+        setFilterPersons(response.data)
+    });
   }, [])
-
-  console.log('render', persons.length, 'persons')
-  // console.log(persons)
 
   const addPerson = (event) => {
     event.preventDefault()
