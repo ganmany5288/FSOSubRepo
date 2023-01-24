@@ -5,6 +5,7 @@ import Humans from './components/Humans'
 import axios from 'axios'
 import peopleService from './services/peopleService'
 import Notification from './services/Notification'
+import ErrorNoti from './services/ErrorNoti'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,6 +14,7 @@ const App = () => {
   const [filterAll, setFilterAll] = useState('')
   const [filterPersons, setFilterPersons] = useState(persons)
   const [notificationMessages, setNotificationMessages] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   useEffect(() => {
     //getAll() from src/services, axios HTTP GET request
@@ -41,7 +43,8 @@ const App = () => {
         // This part feels weird... don't think I'm using proper javascript...
         personToChange.phoneNumber = personObject.phoneNumber
         peopleService.update(personToChange.id, personToChange).then(promise => console.log(promise))
-        // setFilterPersons(persons.filter(person => person.id !== id))
+
+        // Notification Message created and its timer before it disappear
         setNotificationMessages(`${personObject.name} has been updated!`)
         setTimeout(() => {
           setNotificationMessages(null)
@@ -57,6 +60,8 @@ const App = () => {
     }
 
   }
+
+  // Handles event changes
 
   const handlePersonChange = (event) => {
     event.preventDefault()
@@ -79,9 +84,25 @@ const App = () => {
   }
 
   const handleDeleteChange = (event, id) => {
+    const temp = persons.find(person => person.id === id)
     event.preventDefault()
+    // Small popup window asking if you want to confirm your action
     if (window.confirm("Are you sure you want to delete this person?")) {
-      peopleService.deleteUser(id).then(promise => console.log(promise))
+      peopleService
+      .deleteUser(id)
+      .then(promise => console.log(promise))
+      .catch(error => {
+        // Promise = failed state
+        setErrorMsg(`${temp.name} has already been deleted from the phonebook!`)
+        setTimeout(() => {
+          setErrorMsg(null)
+        }, 5000)
+      })
+      // Promise = success state
+      setNotificationMessages(`${temp.name} is deleted`)
+      setTimeout(() => {
+        setNotificationMessages(null)
+      }, 5000)
       setFilterPersons(persons.filter(person => person.id !== id))
     }
   }
@@ -90,6 +111,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={notificationMessages} />
+      <ErrorNoti message={errorMsg} />
+
 
       <Filter filterAll={filterAll}  handleFilterChange={handleFilterChange} handleFilterSearch={handleFilterSearch}/>
 
