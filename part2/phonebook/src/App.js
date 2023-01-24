@@ -45,6 +45,7 @@ const App = () => {
         peopleService.update(personToChange.id, personToChange).then(promise => console.log(promise))
 
         // Notification Message created and its timer before it disappear
+        // Promise = success state
         setNotificationMessages(`${personObject.name} has been updated!`)
         setTimeout(() => {
           setNotificationMessages(null)
@@ -53,6 +54,7 @@ const App = () => {
     }else{
         // HTTP POST Request, its a promise request that contains 3 states (pending, fulfilled, failed)
       peopleService.create(personObject).then(promise => console.log(promise))
+      // Promise = success state
       setNotificationMessages(`${personObject.name} has been added to the phonebook!`)
       setTimeout(() => {
         setNotificationMessages(null)
@@ -98,11 +100,6 @@ const App = () => {
           setErrorMsg(null)
         }, 5000)
       })
-      // Promise = success state
-      setNotificationMessages(`${temp.name} is deleted`)
-      setTimeout(() => {
-        setNotificationMessages(null)
-      }, 5000)
       setFilterPersons(persons.filter(person => person.id !== id))
     }
   }
