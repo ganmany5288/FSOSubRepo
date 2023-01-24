@@ -23,18 +23,15 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+    console.log(event.target)
     const personObject = {
       name: newName,
       phoneNumber: newPhoneNumber,
       id: persons.length + 1
     }
 
-    // HTTP PUT Request, its a promise request that contains 3 states (pending, fulfilled, failed)
-    axios
-    .post('http://localhost:3001/persons', personObject)
-    .then(response => {
-      console.log(response)
-    })
+    // // HTTP PUT Request, its a promise request that contains 3 states (pending, fulfilled, failed)
+    peopleService.create(personObject).then(promise => console.log(promise))
   }
 
   const handlePersonChange = (event) => {
@@ -50,11 +47,29 @@ const App = () => {
   const handleFilterChange = (event) => {
     event.preventDefault()
     setFilterAll(event.target.value)
+    // console.log(event.target.value)
   }
 
   const handleFilterSearch = (event) => {
     event.preventDefault()
     setFilterPersons(filterAll === "" ? persons : persons.filter(person => person.name.includes(filterAll)))
+  }
+
+  const handleDeleteChange = (event, id) => {
+    event.preventDefault()
+    if (window.confirm("Are you sure you want to delete this person?")) {
+      // setFilterPersons(persons.filter(person => person.id !== id))
+      console.log("THIS ACTION IS CONFIRMED")
+      // console.log(persons)
+
+      // peopleService.deleteUser()
+
+      //Current blocking point is to figure out how to get the id of the Person that I'm deleting... task for tomorrows me
+      // peopleService.deleteUser
+      console.log(id)
+      peopleService.deleteUser(id).then(promise => console.log(promise))
+      setFilterPersons(persons.filter(person => person.id !== id))
+    }
   }
 
   return (
@@ -70,7 +85,7 @@ const App = () => {
       <h2>Numbers</h2>
       {/* Mapping persons list to a new array of list that show each individual person*/}
 
-      <Humans filterPersons={filterPersons}/>
+      <Humans filterPersons={filterPersons} handleDeleteChange={handleDeleteChange}/>
     </div>
   )
 }
