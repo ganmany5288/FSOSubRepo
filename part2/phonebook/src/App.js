@@ -22,6 +22,41 @@ const App = () => {
     });
   }, [])
 
+  // const addPerson = (event) => {
+  //   event.preventDefault()
+  //   const personObject = {
+  //     name: newName,
+  //     phoneNumber: newPhoneNumber,
+  //     id: persons.length + 1
+  //   }
+
+  //   if (newName === "" || newPhoneNumber === ""){
+  //     alert("A field is left empty! Please fill it out!")
+  //   }else{
+  //     var shouldUpdate = true
+
+  //     for (let i = 0; i < persons.length; i++){
+  //       if (persons[i].name === personObject.name && persons[i].phoneNumber === personObject.phoneNumber){
+  //         alert(`${personObject.name} has already beed added to the phonebook`)
+  //         setNewName('')
+  //         setNewPhoneNumber('')
+  //         shouldUpdate = false
+  //       }
+  //     }
+  
+  //     if (shouldUpdate === true){
+  //       console.log("This is a new person")
+  //       setPersons(persons.concat(personObject))
+  //       // No idea why the below has to be to make the thing show instead of just setFilterPersons(persons) which basically worked before
+  //       setFilterPersons(persons.concat(personObject))
+  //       setNewName('')
+  //       setNewPhoneNumber('')
+  
+  //     }
+  //   }
+
+  // }
+
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
@@ -30,31 +65,12 @@ const App = () => {
       id: persons.length + 1
     }
 
-    if (newName === "" || newPhoneNumber === ""){
-      alert("A field is left empty! Please fill it out!")
-    }else{
-      var shouldUpdate = true
-
-      for (let i = 0; i < persons.length; i++){
-        if (persons[i].name === personObject.name && persons[i].phoneNumber === personObject.phoneNumber){
-          alert(`${personObject.name} has already beed added to the phonebook`)
-          setNewName('')
-          setNewPhoneNumber('')
-          shouldUpdate = false
-        }
-      }
-  
-      if (shouldUpdate === true){
-        console.log("This is a new person")
-        setPersons(persons.concat(personObject))
-        // No idea why the below has to be to make the thing show instead of just setFilterPersons(persons) which basically worked before
-        setFilterPersons(persons.concat(personObject))
-        setNewName('')
-        setNewPhoneNumber('')
-  
-      }
-    }
-
+    // HTTP PUT Request, its a promise request that contains 3 states (pending, fulfilled, failed)
+    axios
+    .post('http://localhost:3001/persons', personObject)
+    .then(response => {
+      console.log(response)
+    })
   }
 
   const handlePersonChange = (event) => {

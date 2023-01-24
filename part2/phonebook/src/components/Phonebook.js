@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-import React, { Component } from 'react'
+import React from 'react'
 
 
 const Phonebook = ({addPerson, newName, newPhoneNumber, handlePersonChange, handlePhoneChange}) => {

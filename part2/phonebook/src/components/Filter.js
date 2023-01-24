@@ -1,5 +1,4 @@
-import { useState } from "react";
-import React, { Component } from 'react'
+import React from 'react'
 
 
 const Filter = ({filterAll ,handleFilterChange, handleFilterSearch}) => {
