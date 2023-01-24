@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import Phonebook from './components/Phonebook'
 import Humans from './components/Humans'
 import axios from 'axios'
+import peopleService from './services/peopleService'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -12,50 +13,13 @@ const App = () => {
   const [filterPersons, setFilterPersons] = useState(persons)
 
   useEffect(() => {
-    console.log("effect hook")
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response =>{
-        console.log('promise fulfilled!')
-        setPersons(response.data)
-        setFilterPersons(response.data)
-    });
+    //getAll() from src/services, axios HTTP GET request
+    peopleService.getAll().then(initialContact => {
+      console.log('promise fulfilled!')
+      setPersons(initialContact)
+      setFilterPersons(initialContact)
+    })
   }, [])
-
-  // const addPerson = (event) => {
-  //   event.preventDefault()
-  //   const personObject = {
-  //     name: newName,
-  //     phoneNumber: newPhoneNumber,
-  //     id: persons.length + 1
-  //   }
-
-  //   if (newName === "" || newPhoneNumber === ""){
-  //     alert("A field is left empty! Please fill it out!")
-  //   }else{
-  //     var shouldUpdate = true
-
-  //     for (let i = 0; i < persons.length; i++){
-  //       if (persons[i].name === personObject.name && persons[i].phoneNumber === personObject.phoneNumber){
-  //         alert(`${personObject.name} has already beed added to the phonebook`)
-  //         setNewName('')
-  //         setNewPhoneNumber('')
-  //         shouldUpdate = false
-  //       }
-  //     }
-  
-  //     if (shouldUpdate === true){
-  //       console.log("This is a new person")
-  //       setPersons(persons.concat(personObject))
-  //       // No idea why the below has to be to make the thing show instead of just setFilterPersons(persons) which basically worked before
-  //       setFilterPersons(persons.concat(personObject))
-  //       setNewName('')
-  //       setNewPhoneNumber('')
-  
-  //     }
-  //   }
-
-  // }
 
   const addPerson = (event) => {
     event.preventDefault()
