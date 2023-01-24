@@ -23,15 +23,29 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    console.log(event.target)
     const personObject = {
       name: newName,
       phoneNumber: newPhoneNumber,
       id: persons.length + 1
     }
 
-    // // HTTP PUT Request, its a promise request that contains 3 states (pending, fulfilled, failed)
-    peopleService.create(personObject).then(promise => console.log(promise))
+    // Currently thinking of a way to not use a loop to check if this person has existed in this... persons list
+    // But filter is basically a loop lol
+
+    if (persons.filter( person => person.name === personObject.name).length > 0 ){
+      if (window.confirm("Are you sure you want to update this person's phone number?")){
+        const personToChange = persons.find( person => person.name === personObject.name)
+
+        // This part feels weird... don't think I'm using proper javascript...
+        personToChange.phoneNumber = personObject.phoneNumber
+        peopleService.update(personToChange.id, personToChange).then(promise => console.log(promise))
+        // setFilterPersons(persons.filter(person => person.id !== id))
+      }
+    }else{
+        // HTTP POST Request, its a promise request that contains 3 states (pending, fulfilled, failed)
+      peopleService.create(personObject).then(promise => console.log(promise))
+    }
+
   }
 
   const handlePersonChange = (event) => {
@@ -47,7 +61,6 @@ const App = () => {
   const handleFilterChange = (event) => {
     event.preventDefault()
     setFilterAll(event.target.value)
-    // console.log(event.target.value)
   }
 
   const handleFilterSearch = (event) => {
@@ -58,15 +71,6 @@ const App = () => {
   const handleDeleteChange = (event, id) => {
     event.preventDefault()
     if (window.confirm("Are you sure you want to delete this person?")) {
-      // setFilterPersons(persons.filter(person => person.id !== id))
-      console.log("THIS ACTION IS CONFIRMED")
-      // console.log(persons)
-
-      // peopleService.deleteUser()
-
-      //Current blocking point is to figure out how to get the id of the Person that I'm deleting... task for tomorrows me
-      // peopleService.deleteUser
-      console.log(id)
       peopleService.deleteUser(id).then(promise => console.log(promise))
       setFilterPersons(persons.filter(person => person.id !== id))
     }

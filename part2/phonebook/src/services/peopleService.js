@@ -11,8 +11,8 @@ const create = (newObject) => {
     return request.then(response => response.data)
 }
 
-const update = (newObject) => {
-    const request = axios.put(baseUrl)
+const update = (id, newObject) => {
+    const request = axios.put(`${baseUrl}/${id}`, newObject)
     return request.then(response => response.data)
 }
 
@@ -20,7 +20,6 @@ const deleteUser = (id) => {
     // 2nd Parameter for axios.delete() is an axios option, NOT part of the request body
     // That is to delete a specific id, you will have to put it as part of the request body to be deleted
     const request = axios.delete(`${baseUrl}/${id}`)
-    console.log(id)
     return request.then(response => response.data)
 
 }
