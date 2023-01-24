@@ -4,6 +4,7 @@ import Phonebook from './components/Phonebook'
 import Humans from './components/Humans'
 import axios from 'axios'
 import peopleService from './services/peopleService'
+import Notification from './services/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -11,6 +12,7 @@ const App = () => {
   const [newPhoneNumber, setNewPhoneNumber] = useState('')
   const [filterAll, setFilterAll] = useState('')
   const [filterPersons, setFilterPersons] = useState(persons)
+  const [notificationMessages, setNotificationMessages] = useState(null)
 
   useEffect(() => {
     //getAll() from src/services, axios HTTP GET request
@@ -40,10 +42,18 @@ const App = () => {
         personToChange.phoneNumber = personObject.phoneNumber
         peopleService.update(personToChange.id, personToChange).then(promise => console.log(promise))
         // setFilterPersons(persons.filter(person => person.id !== id))
+        setNotificationMessages(`${personObject.name} has been updated!`)
+        setTimeout(() => {
+          setNotificationMessages(null)
+        }, 5000)
       }
     }else{
         // HTTP POST Request, its a promise request that contains 3 states (pending, fulfilled, failed)
       peopleService.create(personObject).then(promise => console.log(promise))
+      setNotificationMessages(`${personObject.name} has been added to the phonebook!`)
+      setTimeout(() => {
+        setNotificationMessages(null)
+      }, 5000)
     }
 
   }
@@ -79,6 +89,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessages} />
 
       <Filter filterAll={filterAll}  handleFilterChange={handleFilterChange} handleFilterSearch={handleFilterSearch}/>
 
