@@ -1,16 +1,33 @@
 // Node's built-in HTTP module, primary goal is for the server creation
-import http from 'http'
-const http = require('http')
+const express = require('express')
+const app = express()
 
-// createServer is a method used to create a new web server (from http module)
-// event handler is registered to the server
-const app = http.createServer((request, response) => {
-   //  Request response (200) with content-type: text/plain
-   response.writeHead(200, { 'Content-Type': 'text/plain' })
-   // Content of the site
-   response.end('Hello World')
+// Hardcoded JSON data
+let notes = [
+    {
+        id: 1, 
+        content: "HTML is easy",
+        important: true
+    },
+    {
+        id: 2,
+        content: "Browser can only execute Javascript",
+        important: false
+    },
+    {
+        id: 3,
+        content: "GET and POST are the most important methods of HTTP protocol",
+        important: true
+    }
+]
+
+app.get('/' , (request, response) => {
+    response.send('<h1>Hello World</h1>')
 })
 
+app.get('/api/notes', (request, response) => {
+    response.json(notes)
+})
 
 // Binds http server to the app variable
 // Listens to the request on PORT 3001 (if unused/available)
