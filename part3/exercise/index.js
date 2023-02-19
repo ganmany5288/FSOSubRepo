@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 
+
 // Hardcoded JSON data
 let notes = [
     {
@@ -21,6 +22,7 @@ let notes = [
     }
 ]
 
+app.use(express.json())
 
 // HTTP GET request event handler
 // (request) parameter contains information on the HTTP request (in this case GET request)
@@ -49,6 +51,46 @@ app.get('/api/notes/:id', (request, response) => {
         response.status(404).end()
     }
 })
+
+
+
+//HTTP Delete request
+// app.delete('/api/notes/:id', (request, response) => {
+//     const id = Number(request.params.id)
+//     notes = notes.filter(note => note.id !== id)
+
+//     response.status(204).end()
+// })
+
+
+const generateId = () => {
+    const maxId = notes.length > 0
+        ? Math.max(...notes.map(n => n.id)) //something interesting is happening at this line
+        : 0
+    return maxId + 1
+}
+
+//HTTP POST request to handle posting notes into webapp
+// Right now its not working as intended because the data isn't received by the server...
+app.post('/api/notes', (request, response) => {
+    const body = request.body
+
+    if (!body.content) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+    const note = {
+        content: body.content,
+        important: body.important || false, // Evaluate the important variable in the body, if it doesn't exist then expression evaluates to false
+        id: generateId(),
+    }
+
+    notes = notes.concat(note)
+    console.log(note)
+    response.json(note)
+})
+
 
 // Binds http server to the app variable
 // Listens to the request on PORT 3001 (if unused/available)
