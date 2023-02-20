@@ -58,6 +58,17 @@ app.get('/api/people/:id', (request, response) => {
     }
 })
 
+//HTTP DELETE request
+
+app.delete('/api/people/:id', (request, response) => {
+    const id = Number(request.params.id)
+    people = people.filter(p => p.id !== id)
+
+    response.status(204).end()
+})
+
+
+
 const PORT = 3002
 app.listen(PORT)
 console.log(`Server listening on ${PORT}`)
