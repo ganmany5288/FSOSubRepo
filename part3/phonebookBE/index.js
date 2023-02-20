@@ -38,6 +38,14 @@ app.get('/', (request, response) => {
     response.send('<h1>Hello World</h1>')
 })
 
+app.get('/info', (request, response) => {
+    // response.send(`<h1>This is info page!</h1>`)
+    response.write(`Phonebook has information for ${people.length} people\n`)
+    response.write(`${new Date()}`)
+    response.end()
+    // response.send('Let me know if this page lives!')
+})
+
 const PORT = 3002
 app.listen(PORT)
 console.log(`Server listening on ${PORT}`)
