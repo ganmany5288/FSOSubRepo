@@ -40,10 +40,22 @@ app.get('/', (request, response) => {
 
 app.get('/info', (request, response) => {
     // response.send(`<h1>This is info page!</h1>`)
-    response.write(`Phonebook has information for ${people.length} people\n`)
+    response.write(`Phonebook has information for ${people.length} people\n`)  // This step is completed but how do I use an h1 tag here (the HTML tags)
     response.write(`${new Date()}`)
     response.end()
     // response.send('Let me know if this page lives!')
+})
+
+
+app.get('/api/people/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = people.find(s => s.id === id)
+
+    if (person){
+        response.json(person)
+    } else {
+        response.status(404).end()
+    }
 })
 
 const PORT = 3002
