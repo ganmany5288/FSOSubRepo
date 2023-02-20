@@ -68,6 +68,33 @@ app.delete('/api/people/:id', (request, response) => {
 })
 
 
+const generateId = () => {
+    return Math.floor(Math.random() * 9999)
+}
+
+
+app.post('/api/people', (request, response) => {
+    const body = request.body
+
+    if (!body.name || !body.number){
+        return response.status(400).json('Either name or number is missing, please try again!')
+    }else if (people.find(p => p.name === body.name)){
+        return response.status(400).json('This person already exists, please try again!')
+    }
+
+    const newID = generateId()
+    const person = {
+        id: newID,
+        name: body.name,
+        number: body.number
+    }
+
+    
+
+    people = people.concat(person)
+    response.json(people)
+})
+
 
 const PORT = 3002
 app.listen(PORT)
