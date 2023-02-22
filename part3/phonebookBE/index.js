@@ -28,7 +28,20 @@ let people = [
 // How express.js uses these middleware function to handling request/response objects
 app.use(express.json())
 app.use(requestLogger)
-app.use(morgan('tiny'))
+app.use(morgan(function (tokens, req, res) {
+    const bod = JSON.stringify(req.body)
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms',
+      bod
+    ].join(' ')
+  }
+))
+
+
 
 
 // HTTP GET request
