@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+var morgan = require('morgan')
 
 let people = [
     { 
@@ -24,8 +25,10 @@ let people = [
     }
 ]
 
-
+// How express.js uses these middleware function to handling request/response objects
 app.use(express.json())
+app.use(requestLogger)
+app.use(morgan('tiny'))
 
 
 // HTTP GET request
@@ -58,14 +61,24 @@ app.get('/api/people/:id', (request, response) => {
     }
 })
 
+function requestLogger (request, response, next) {
+    console.log('Method: ', request.method)
+    console.log('Path: ', request.path)
+    console.log('Body: ', request.body)
+    console.log('------')
+    next()
+}
+
+// app.use(requestLogger)
+
 //HTTP DELETE request
 
-app.delete('/api/people/:id', (request, response) => {
-    const id = Number(request.params.id)
-    people = people.filter(p => p.id !== id)
+// app.delete('/api/people/:id', (request, response) => {
+//     const id = Number(request.params.id)
+//     people = people.filter(p => p.id !== id)
 
-    response.status(204).end()
-})
+//     response.status(204).end()
+// })
 
 
 const generateId = () => {
@@ -94,6 +107,13 @@ app.post('/api/people', (request, response) => {
     people = people.concat(person)
     response.json(people)
 })
+
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({error: 'unknown endpoint'})
+}
+
+app.use(unknownEndpoint)
 
 
 const PORT = 3002

@@ -2,7 +2,6 @@
 const express = require('express')
 const app = express()
 
-
 // Hardcoded JSON data
 let notes = [
     {
@@ -91,6 +90,12 @@ app.post('/api/notes', (request, response) => {
     response.json(note)
 })
 
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({error: 'unknown endpoint'})
+}
+
+app.use(unknownEndpoint)
 
 // Binds http server to the app variable
 // Listens to the request on PORT 3001 (if unused/available)
