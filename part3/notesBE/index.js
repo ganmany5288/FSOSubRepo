@@ -1,6 +1,10 @@
 // Node's built-in HTTP module, primary goal is for the server creation
 const express = require('express')
 const app = express()
+const cors = require('cors')
+app.use(cors({
+    origin: '*'
+}))
 
 // Hardcoded JSON data
 let notes = [
