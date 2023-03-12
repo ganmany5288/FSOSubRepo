@@ -2,12 +2,9 @@ import { useState , useEffect } from 'react'
 import Filter from './components/Filter'
 import Phonebook from './components/Phonebook'
 import Humans from './components/Humans'
-import axios from 'axios'
 import peopleService from './services/peopleService'
 import Notification from './services/Notification'
 import ErrorNoti from './services/ErrorNoti'
-const baseURL = 'http://localhost:3002/api/people'
-
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
