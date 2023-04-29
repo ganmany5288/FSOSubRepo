@@ -86,24 +86,19 @@ const generateId = () => {
 
 app.post('/api/people', (request, response) => {
     const body = request.body
-
-    if (!body.name || !body.number){
-        return response.status(400).json('Either name or number is missing, please try again!')
-    }else if (people.find(p => p.name === body.name)){
-        return response.status(400).json('This person already exists, please try again!')
+    if(!body.content) {
+        return response.status(400).json({
+            error: 'missing content'
+        })
     }
-
-    const newID = generateId()
-    const person = {
-        id: newID,
+    const people = new PhoneBook({
         name: body.name,
-        number: body.number
-    }
+        phone_number: body.phone_number
+    })
 
-    
-
-    people = people.concat(person)
-    response.json(people)
+    people.save().then(savedPeople => {
+        response.json(savedPeople)
+    })
 })
 
 
