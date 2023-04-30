@@ -79,14 +79,19 @@ app.delete('/api/people/:id', (request, response) => {
 })
 
 
-const generateId = () => {
-    return Math.floor(Math.random() * 9999)
-}
-
-
 app.post('/api/people', (request, response) => {
     const body = request.body
-    if(!body.content) {
+
+    const keys = Object.keys(body)
+    const validKeys = ['name', 'phone_number']
+    const hasOnlyValidKeys = keys.length === validKeys.length && keys.every(key => validKeys.includes(key))
+
+
+    if(!hasOnlyValidKeys){
+        return response.status(400).json({
+            error:'missing parameters, please try again!'
+        })
+    }else if(!body.name || !body.phone_number) {
         return response.status(400).json({
             error: 'missing content'
         })
