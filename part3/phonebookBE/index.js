@@ -50,15 +50,16 @@ app.get('/info', (request, response) => {
 })
 
 
-app.get('/api/people/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = people.find(s => s.id === id)
-
-    if (person){
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+app.get('/api/people/:id', (request, response, next) => {
+    PhoneBook.findById(request.params.id)
+    .then(entry => {
+        if(entry){
+            response.json(entry)
+        }else{
+            response.status(404).end()
+        }
+    })
+    .catch(error => next(error))
 })
 
 function requestLogger (request, response, next) {
@@ -71,11 +72,43 @@ function requestLogger (request, response, next) {
 
 // app.use(requestLogger)
 
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({error: 'unknown endpoint'})
+}
+
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+    if(error.name === 'CastError'){
+        return response.status(400).send({
+            error: 'malformatted id'
+        })
+    }
+    next(error)
+}
+
+
+
 // HTTP DELETE request
-app.delete('/api/people/:id', (request, response) => {
-    const id = Number(request.params.id)
-    people = people.filter(p => p.id !== id)
-    response.status(204).end()
+app.delete('/api/people/:id', (request, response, next) => {
+    PhoneBook.findByIdAndRemove(request.params.id)
+    .then(result => {
+        response.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
+app.put('/api/people/:id', (request, response, next) => {
+    const body = request.body
+    const phonebook = {
+        name: body.name,
+        phone_number: body.phone_number
+    }
+    PhoneBook.findByIdAndUpdate(request.params.id, phonebook, { new: true })
+        .then(updatedPhone => {
+            response.json(updatedPhone)
+        })
+        .catch(error => next(error))
 })
 
 
@@ -106,13 +139,8 @@ app.post('/api/people', (request, response) => {
     })
 })
 
-
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({error: 'unknown endpoint'})
-}
-
 app.use(unknownEndpoint)
-
+app.use(errorHandler)
 
 const PORT = 3002
 app.listen(PORT)
