@@ -29,7 +29,7 @@ const App = () => {
     const personObject = {
       name: newName,
       phoneNumber: newPhoneNumber,
-      id: persons.length + 1
+      // id: persons.length + 1
     }
 
     // Currently thinking of a way to not use a loop to check if this person has existed in this... persons list

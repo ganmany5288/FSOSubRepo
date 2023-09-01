@@ -3,5 +3,5 @@ Content-Type: application/json
 
 {
     "name": "VivyTest",
-    "phone_number": "1234"
+    "phoneNumber": "1234"
 }
