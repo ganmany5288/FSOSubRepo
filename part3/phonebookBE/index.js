@@ -102,7 +102,7 @@ app.put('/api/people/:id', (request, response, next) => {
   const body = request.body
   const phonebook = {
     name: body.name,
-    phone_number: body.phone_number
+    phoneNumber: body.phoneNumber
   }
   PhoneBook.findByIdAndUpdate(request.params.id, phonebook, { new: true })
     .then(updatedPhone => {
@@ -116,7 +116,7 @@ app.post('/api/people', (request, response) => {
   const body = request.body
 
   const keys = Object.keys(body)
-  const validKeys = ['name', 'phone_number']
+  const validKeys = ['name', 'phoneNumber']
   const hasOnlyValidKeys = keys.length === validKeys.length && keys.every(key => validKeys.includes(key))
 
 
@@ -124,15 +124,16 @@ app.post('/api/people', (request, response) => {
     return response.status(400).json({
       error:'missing parameters, please try again!'
     })
-  }else if(!body.name || !body.phone_number) {
+  }else if(!body.name || !body.phoneNumber) {
     return response.status(400).json({
       error: 'missing content'
     })
   }
   const people = new PhoneBook({
     name: body.name,
-    phone_number: body.phone_number
+    phoneNumber: body.phoneNumber
   })
+  console.log(people)
 
   people.save().then(savedPeople => {
     response.json(savedPeople)

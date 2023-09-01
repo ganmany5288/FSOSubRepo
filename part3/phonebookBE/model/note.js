@@ -14,7 +14,7 @@ mongoose.connect(url)
 const phoneBookSchema = new mongoose.Schema(
   {
     name: String,
-    phone_number: String,
+    phoneNumber: String,
   },
   {
     collection: 'phonebookschemas'
